@@ -11,156 +11,267 @@
 
 namespace structures {
 
-//! classe ArrayList
+//! class ArrayList
 template<typename T>
 class ArrayList {
  public:
-    //! metodo construtor vazio
+    //! Constructor method of ArrayList();
     ArrayList();
 
-    //! metodo construtor com o tamanho como parametro
+    //! Constructor method with max_size as parameter;
     explicit ArrayList(std::size_t max_size);
 
-    //! metodo destrutor
+    //! Destructor method
     ~ArrayList();
 
-    //! limpa a lista
+    //! Wipe the list
     void clear();
 
-    //! insere um elemento no final da fila
+    //! Puts an element in the end of the list
     void push_back(const T& data);
 
-    //! insere um elemento no começo da fila
+    //! Puts an element in the beginning of the list
     void push_front(const T& data);
 
-    //! insere um elemento em um determinado index da fila
+    //! Puts an element in a specific index
     void insert(const T& data, std::size_t index);
 
-    //! insere um elemento na ordem
+    //! Puts an element neatly
     void insert_sorted(const T& data);
 
-    //! retira um elemento em um determinado index da fila
+    //! Takes an specific element off by index
     T pop(std::size_t index);
 
-    //! retira um elemento do final da fila
+    //! Takes the last element off
     T pop_back();
 
-    //! retira um elemento do começo da fila
+    //! Takes the first element off
     T pop_front();
 
-    //! remove um elemento
+    //! Remove an specific element
     void remove(const T& data);
 
-    //! retorna se a lista esta cheia
+    //! Return if full
     bool full() const;
 
-    //! retorna se a lista esta vazia
+    //! Return if empty
     bool empty() const;
 
-    //! retorna se o elemento está na lista
+    //! Returns if an specific element belongs to the list
     bool contains(const T& data) const;
 
-    //! encontra a posicao da primeira vez que encontra o elemento
+    //! Returns the index of an element
     std::size_t find(const T& data) const;
 
-    //! retorna o tamanho da lista
+    //! Returns the size of the list
     std::size_t size() const;
 
-    //! retorna a quantidade maxima de elementos da lista
+    //! Returns the max size of the list
     std::size_t max_size() const;
 
-    //! retorna o elemento do 'index' precisa verificar se é valido
+    //! Returns the element of the index
+    // it needs to verify if the index is valid
     T& at(std::size_t index);
 
-    //! retorna o elemento do 'index' NAO precisa verificar se é valido
+    //! Returns the element of the index
+    // it doesn't need to verify if the index is valid
     T& operator[](std::size_t index);
 
-    //! Polymorph for const object
+    //! Returns the element of the index - constant
+    // it needs to verify if the index is valid
     const T& at(std::size_t index) const;
 
-    //! Polymorph for const object
+    //! Returns the element of the index - constant
+    // it doesn't need to verify if the index is valid
     const T& operator[](std::size_t index) const;
 
  private:
+    //! Default max size of the list
     static const auto DEFAULT_MAX = 10u;
+    //! pointer to the contents
     T* contents;
+    //! actual size of the list
     std::size_t size_;
+    //! max size of our list
     std::size_t max_size_;
 };
 
-//-------------------------------------
-
-//! ArrayListString e' uma especializacao da classe ArrayList
+//! ArrayListString is an spelization of the class ArrayList()
 class ArrayListString : public ArrayList<char *> {
  public:
-    //! construtor da classe especializada ArrayListString
+    //! Constructor method of ArrayListString();
     ArrayListString() : ArrayList() {}
 
-    //! construtor da classe especializada ArrayListString com parametro de tamanho
+    //! Constructor method with max_size as parameter;
     explicit ArrayListString(std::size_t max_size) : ArrayList(max_size) {}
 
-    //! destrutor da classe especializada ArrayListString
+    //! Destructor method
     ~ArrayListString();
 
-    //! limpa a lista de strings ArrayListString 
+    //! Wipe the list
     void clear();
 
-    //! insere uma lista de strings no final da fila
+    //! Puts an element in the end of the list
     void push_back(const char *data);
 
-    //! insere uma lista de strings no começo da fila
+    //! Puts an element in the beginning of the list
     void push_front(const char *data);
 
-    //! insere uma lista de strings no index
+    //! Puts an element in a specific index
     void insert(const char *data, std::size_t index);
 
-    //! insere uma lista de strings ordenadamente
+    //! Puts an element neatly
     void insert_sorted(const char *data);
 
-    //! retira uma lista de strings do index
+    //! Takes an specific element off by index
     char *pop(std::size_t index);
 
-    //! retira uma lista de strings do final da fila
+    //! Takes the last element off
     char *pop_back();
 
-    //! retira uma lista de strings do index
+    //! Takes the first element off
     char *pop_front();
 
-    //! ...
+    //! Remove an specific element
     void remove(const char *data);
 
-    //! ...
+    //! Returns if an specific element belongs to the list
     bool contains(const char *data);
 
-    //! ...
+    //! Returns the index of an element
     std::size_t find(const char *data);
-
 };
 
-}  // namespace structures
+}  //  namespace structures
+
+//  call superclass = Arraylist::insert(data,index)
+//  ArrayList<char*>::push_front(input);
+
+structures::ArrayListString::~ArrayListString() {
+    this->clear();
+}
+
+void structures::ArrayListString::clear() {
+    for (int i = 0; i > static_cast<int>(ArrayList<char*>::size()); i++) {
+        // delete[] i;
+    }
+}
+
+void structures::ArrayListString::push_back(const char *data) {
+    /*
+    if (full()) {
+        throw std::out_of_range("A fila esta cheia!");
+    } else {
+        // contents[size_] = data;
+        // size_++;
+    }
+    */
+}
+
+void structures::ArrayListString::push_front(const char *data) {
+    /*
+    insert(data, 0);
+    */
+}
+
+void structures::ArrayListString::insert(const char *data,
+std::size_t index) {
+    /*
+    if (full()) {
+        throw std::out_of_range("A fila esta cheia!");
+    } else if (index >= max_size_ || index < 0 || index > size_) {
+        throw std::out_of_range("index invalido!");
+    } else {
+        for (int i = size_; i > index; i--) {
+            contents[i] = contents[i-1];
+        }
+        contents[index] = data;
+        size_ += 1;
+    }
+    */
+}
+
+void structures::ArrayListString::insert_sorted(const char *data) {
+    /*
+    if (full()) {
+        throw std::out_of_range("lista cheia");
+    } else {
+        int i;
+        for (i = 0; i < size_ && contents[i] < data; i++) {}
+        insert(data, i);
+    }
+    */
+}
+
+// char *pop(std::size_t index);
+
+char structures::ArrayListString::*pop(std::size_t index) {
+    /*
+    if (empty()) {
+        throw std::out_of_range("A fila esta vazia!");
+    } else if (index >= this->size_ || index < 0) {
+        throw std::out_of_range("Invalid index");
+    }
+    auto data = contents[index];
+
+    for (int i = index; i < size_-1; i++) {
+        contents[i] = contents[i+1];
+    }
+    size_ = size_ - 1;
+    return data;
+    */
+}
+
+// char *pop_back();
+
+char structures::ArrayListString::*pop_back() {
+    /*
+    return pop(size_-1);
+    */
+}
+
+// char *pop_front();
+
+char structures::ArrayListString<T>::*pop_front() {
+    /*
+    return pop(0);
+    */
+}
 
 
+void structures::ArrayListString::remove(const char *data) {
+    /*
+    bool found = false;
+    for (int i = 0; i < size_; i++) {
+        if (contents[i] == data && found == false) {
+            found = true;
+            pop(i);
+        }
+    }
+    */
+}
+
+bool structures::ArrayLisString::contains(const char *data) {
+    /*
+    return find(data) != size_;
+    */
+    return true;
+}
 
 
+std::size_t structures::ArrayListString::find(const char *data) {
+    /*
+    for (int i = 0; i < this->size_; i++) {
+        if (data == this->contents[i]) {
+            return i;
+        }
+    }
+    return this->size_;
+    */
+}
 
 
-//chamar superclasse = Arraylist::insert(data,index)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+//------------------------------------------------------------
 template<typename T>
 structures::ArrayList<T>::ArrayList() {
     ArrayList(DEFAULT_MAX);
