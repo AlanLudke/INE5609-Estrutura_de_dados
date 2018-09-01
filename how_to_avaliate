@@ -1,0 +1,7 @@
+Passos para efetuar os testes de seu código localmente:
+
+Baixar este arquivo avaliate e, se necessário, atualizar suas propriedades para permitir a execução:
+chmod +x avaliate
+Colocar o avaliate, a sua implementação do exercício (por exemplo: array_stack.h) e a implementação disponibilizada para os testes (por exemplo: tests_array_stack.cpp) em uma mesma pasta
+Executar. Por exemplo:
+./avaliate tests_array_stack
