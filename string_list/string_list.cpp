@@ -6,7 +6,7 @@
 #define STRUCTURES_STRING_LIST_H
 
 #include <cstdint>
-#include <stdexcept>  // C++ exceptions
+#include <stdexcept>  // C++ Exceptions
 #include <cstring>
 
 namespace structures {
@@ -97,7 +97,7 @@ class ArrayList {
 };
 
 //! ArrayListString is an spelization of the class ArrayList()
-class ArrayListString : public ArrayList<char *> {
+class ArrayListString : public ArrayList<char *> {	 	  	  		 	      	   	    	  	     	 	
  public:
     //! Constructor method of ArrayListString();
     ArrayListString() : ArrayList() {}
@@ -144,136 +144,8 @@ class ArrayListString : public ArrayList<char *> {
 
 }  //  namespace structures
 
-//  call superclass = Arraylist::insert(data,index)
-//  ArrayList<char*>::push_front(input);
-
-structures::ArrayListString::~ArrayListString() {
-    this->clear();
-}
-
-void structures::ArrayListString::clear() {
-    for (int i = 0; i > static_cast<int>(ArrayList<char*>::size()); i++) {
-        // delete[] i;
-    }
-}
-
-void structures::ArrayListString::push_back(const char *data) {
-    /*
-    if (full()) {
-        throw std::out_of_range("A fila esta cheia!");
-    } else {
-        // contents[size_] = data;
-        // size_++;
-    }
-    */
-}
-
-void structures::ArrayListString::push_front(const char *data) {
-    /*
-    insert(data, 0);
-    */
-}
-
-void structures::ArrayListString::insert(const char *data,
-std::size_t index) {
-    /*
-    if (full()) {
-        throw std::out_of_range("A fila esta cheia!");
-    } else if (index >= max_size_ || index < 0 || index > size_) {
-        throw std::out_of_range("index invalido!");
-    } else {
-        for (int i = size_; i > index; i--) {
-            contents[i] = contents[i-1];
-        }
-        contents[index] = data;
-        size_ += 1;
-    }
-    */
-}
-
-void structures::ArrayListString::insert_sorted(const char *data) {
-    /*
-    if (full()) {
-        throw std::out_of_range("lista cheia");
-    } else {
-        int i;
-        for (i = 0; i < size_ && contents[i] < data; i++) {}
-        insert(data, i);
-    }
-    */
-}
-
-// char *pop(std::size_t index);
-
-char structures::ArrayListString::*pop(std::size_t index) {
-    /*
-    if (empty()) {
-        throw std::out_of_range("A fila esta vazia!");
-    } else if (index >= this->size_ || index < 0) {
-        throw std::out_of_range("Invalid index");
-    }
-    auto data = contents[index];
-
-    for (int i = index; i < size_-1; i++) {
-        contents[i] = contents[i+1];
-    }
-    size_ = size_ - 1;
-    return data;
-    */
-}
-
-// char *pop_back();
-
-char structures::ArrayListString::*pop_back() {
-    /*
-    return pop(size_-1);
-    */
-}
-
-// char *pop_front();
-
-char structures::ArrayListString<T>::*pop_front() {
-    /*
-    return pop(0);
-    */
-}
-
-
-void structures::ArrayListString::remove(const char *data) {
-    /*
-    bool found = false;
-    for (int i = 0; i < size_; i++) {
-        if (contents[i] == data && found == false) {
-            found = true;
-            pop(i);
-        }
-    }
-    */
-}
-
-bool structures::ArrayLisString::contains(const char *data) {
-    /*
-    return find(data) != size_;
-    */
-    return true;
-}
-
-
-std::size_t structures::ArrayListString::find(const char *data) {
-    /*
-    for (int i = 0; i < this->size_; i++) {
-        if (data == this->contents[i]) {
-            return i;
-        }
-    }
-    return this->size_;
-    */
-}
-
-
-//------------------------------------------------------------
 template<typename T>
-structures::ArrayList<T>::ArrayList() {
+structures::ArrayList<T>::ArrayList() {	 	  	  		 	      	   	    	  	     	 	
     ArrayList(DEFAULT_MAX);
 }
 
@@ -310,7 +182,7 @@ void structures::ArrayList<T>::push_front(const T& data) {
 }
 
 template<typename T>
-void structures::ArrayList<T>::insert(const T& data, std::size_t index) {
+void structures::ArrayList<T>::insert(const T& data, std::size_t index) {	 	  	  		 	      	   	    	  	     	 	
     if (full()) {
         throw std::out_of_range("A fila esta cheia!");
     } else if (index >= max_size_ || index < 0 || index > size_) {
@@ -346,7 +218,7 @@ T structures::ArrayList<T>::pop(std::size_t index) {
 
     for (int i = index; i < size_-1; i++) {
         contents[i] = contents[i+1];
-    }
+    }	 	  	  		 	      	   	    	  	     	 	
     size_ = size_ - 1;
     return data;
 }
@@ -382,7 +254,7 @@ bool structures::ArrayList<T>::full() const {
 }
 
 template<typename T>
-bool structures::ArrayList<T>::empty() const {
+bool structures::ArrayList<T>::empty() const {	 	  	  		 	      	   	    	  	     	 	
     if (size_ == 0) {
         return true;
     } else {
@@ -419,7 +291,7 @@ template <typename T>
 T& structures::ArrayList<T>::at(std::size_t index) {
     if (size_ < index || index < 0) {
         throw std::out_of_range("Index out of bounds.");
-    } else {
+    } else {	 	  	  		 	      	   	    	  	     	 	
         return this->operator[](index);
     }
 }
@@ -441,6 +313,95 @@ const T& structures::ArrayList<T>::at(std::size_t index) const {
 template<typename T>
 const T& structures::ArrayList<T>::operator[](std::size_t index) const {
     return contents[index];
+}
+
+structures::ArrayListString::~ArrayListString() {
+    clear();
+}
+
+void structures::ArrayListString::clear() {
+    ArrayList::clear();
+}
+
+void structures::ArrayListString::push_back(const char *data) {
+    ArrayListString::insert(data, ArrayList::size());
+}
+
+void structures::ArrayListString::push_front(const char *data) {	 	  	  		 	      	   	    	  	     	 	
+    insert(data, 0);
+}
+
+void structures::ArrayListString::insert(const char *data,
+std::size_t index) {
+    if (strlen(data) > 10000) {
+        throw std::out_of_range("String muito grande!");
+    } else {
+        // takes the size of *data and put in 'len'
+        std::size_t len = strlen(data);
+
+        // alocates memory with the size of data;
+        char *datanew = new char[len + 1];
+
+        // copy the content of *data to datanew
+        snprintf(datanew, len + 1, "%s", data);
+
+        // insert the pointer in the list
+        ArrayList::insert(datanew, index);
+    }
+}
+
+void structures::ArrayListString::insert_sorted(const char *data) {
+     if (strlen(data) > 10000) {
+        throw std::out_of_range("String muito grande!");
+    } else {
+        std::size_t i;
+        for (i = 0; i < ArrayList::size(); i++) {
+           if (strcmp(ArrayList::at(i), data) > 0) {  // a>b
+               break;
+            }
+        }
+        ArrayListString::insert(data, i);
+    }
+}
+
+char* structures::ArrayListString::pop(std::size_t index) {	 	  	  		 	      	   	    	  	     	 	
+    char* temp = ArrayList::pop(index);
+
+    return temp;
+}
+
+char* structures::ArrayListString::pop_back() {
+    return pop(ArrayList::size() - 1);
+}
+
+char* structures::ArrayListString::pop_front() {
+    return pop(0);
+}
+
+void structures::ArrayListString::remove(const char *data) {
+    std::size_t i;
+
+    for (i = 0; i < ArrayList::size(); i++) {
+        if (strcmp(ArrayList::at(i), data) == 0) {  // a=b
+              break;
+        }
+    }
+    pop(i);
+}
+
+bool structures::ArrayListString::contains(const char *data) {
+    return (find(data) != ArrayList::size());
+}
+
+
+std::size_t structures::ArrayListString::find(const char *data) {
+    std::size_t index;
+    for (index = 0; index < ArrayList::size(); index++) {
+        if (strcmp(ArrayList::at(index), data) == 0) {
+            break;
+        }
+    }	 	  	  		 	      	   	    	  	     	 	
+    return index;
 }
 
 #endif
