@@ -1,0 +1,25 @@
+INICIAL
+
+0 0 0 0 1 1
+0 1 0 1 1 1 
+0 1 1 0 0 0
+
+temporária
+
+0 0 0 0 1 1
+0 2 0 1 1 1
+0 2 2 0 0 0
+
+FILA    (0,4)(0,5)(1,4)(1,5)(1,3)
+
+for x
+	for y
+		se igual a 1
+		insere(x,y) na fila
+		enquanto fila nao vazia
+			(x, y)<-remove da fila
+			aplica rótulo em R(x,y)
+			avalia 4 vizinhos
+			estar no domínio e ser = a 1
+			não tenha sido visitado
+		rotulo++
