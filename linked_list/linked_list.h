@@ -82,10 +82,6 @@ class LinkedList {
             next_ = node;
         }
 
-        void data(const T& data) {  // setter: data_
-            data_ = data;
-        }
-
      private:
         T data_;
         Node* next_{nullptr};
@@ -115,44 +111,36 @@ structures::LinkedList<T>::~LinkedList() {
 
 template<typename T>
 void structures::LinkedList<T>::clear() {
-  Node *atual, *anterior;
-
-  if (empty()) {
-    throw std::out_of_range("lista vazia!");
-  } else {
-    atual = head;
-
-    while (atual != nullptr) {
-      //  eliminar ate o fim
-      anterior = atual;
-      //  deslocar para o proximo mesmo que seja nulo
-      atual = atual->next();
-
-      delete anterior->data();
-      delete[] anterior;
+    while(!empty()) {
+        pop_front();
     }
-  }
-  head = nullptr;
-  size_ = 0;
 }
 
 template<typename T>
 void structures::LinkedList<T>::push_back(const T& data) {
+  if (empty()) {
+    push_front(data);
+  } else {
+    insert(data, size_);
+  }
 }
 
 template<typename T>
 void structures::LinkedList<T>::push_front(const T& data) {
 /*
-  1- Verifica a possibilidade de alocacao de um elemento;
-  2- O proximo deste novo elemento passa ser o primeiro da lista;
-  3- A cabeca de lista passa a apontar para o novo elemento.
+Verifica a possibilidade de alocac¸ao de um elemento; ˜
+O proximo deste novo elemento passa ser o primeiro da ´
+lista;
+A cabec¸a de lista passa a apontar para o novo elemento.
 */
-  Node *temp = new Node(data, head);
 
-  if (temp == nullptr) {
+Node *novo = new Node(data);
+
+  if (novo == nullptr) {
     throw std::out_of_range("Nodo não alocado!");
   } else {
-    head = temp;
+    novo->next(head);
+    head = novo;
     size_ = size_ + 1;
   }
 }
@@ -164,7 +152,7 @@ void structures::LinkedList<T>::insert(const T& data, std::size_t index) {
   if (index > size_) {
     throw std::out_of_range("Erro no index!!");
   } else {
-    if (size_ == 0) {
+    if (index == 0) {
       return push_front(data);
     } else {
       novo = new Node(data);
@@ -172,11 +160,10 @@ void structures::LinkedList<T>::insert(const T& data, std::size_t index) {
         throw std::out_of_range("Nodo não alocado!");
       } else {
         anterior = head;
-        for (int i = 0; i < size_ - 1; i++) {
-          anterior= anterior->next();
+        for (int i = 0; i < index - 1; i++) {
+          anterior = anterior->next();
         }
         novo->next(anterior->next());
-        novo->data(data);
         anterior->next(novo);
         size_++;
       }
@@ -186,32 +173,53 @@ void structures::LinkedList<T>::insert(const T& data, std::size_t index) {
 
 template <typename T>
 void structures::LinkedList<T>::insert_sorted(const T& data) {
-  Node *atual = head;  //  auxiliares
-  int index = 0;
+  // If list is empty, just push
+        if (empty()) {
+            push_back(data);
+            return;
+        }
 
-  while (atual != nullptr && atual->data() < data) {
-    atual = atual->next();
-    index++;
-  }
-  return insert(data, index);
+        auto it = head;
+        int index = 0;
+
+        while (it->data() < data) {
+            it = it->next();
+            index++;
+
+            // If reach the last object, push on last pos
+            if (it == nullptr) {
+                push_back(data);
+                return;
+            }
+        }
+
+        insert(data, index);
 }
 
 template <typename T>
 T& structures::LinkedList<T>::at(std::size_t index) {
+  if (index >= size()) {
+    throw std::out_of_range("Index out of bounds.");
+  }
+    auto it = head;
+    for (int i = 0; i < index; i++) {
+      it = it->next();
+    }
+    return it->data();
 }
 
 template<typename T>
 T structures::LinkedList<T>::pop(std::size_t index) {
   Node *anterior, *eliminar;  //  auxiliares
   T volta;  //  errado T*
-  if (index > size_) {
+  if (empty() || index >= size_ || index < 0) {
     throw std::out_of_range("Erro no index!!");
   } else {
-    if (size_ == 0) {
+    if (index == 0) {
       return pop_front();
     } else {
       anterior = head;
-      for (int i = 0; i < size_ - 1; i++) {
+      for (int i = 0; i < index - 1; i++) {
         anterior = anterior->next();
       }
       eliminar = anterior->next();
@@ -226,13 +234,13 @@ T structures::LinkedList<T>::pop(std::size_t index) {
 
 template<typename T>
 T structures::LinkedList<T>::pop_back() {
-  return pop(size_);
+  return pop(size_-1);
 }
 
 template<typename T>
 T structures::LinkedList<T>::pop_front() {
   Node *saiu;
-  T volta;
+  T volta;  // é ponteiro aqui?
 
   if (empty()) {
     throw std::out_of_range("Lista vazia, não é possivel retirar!");
@@ -241,8 +249,7 @@ T structures::LinkedList<T>::pop_front() {
     volta = saiu->data();
     head = saiu->next();
     size_ = size_ - 1;
-    delete[] saiu;
-
+    delete saiu;
     return volta;
   }
 }
@@ -264,12 +271,15 @@ void structures::LinkedList<T>::remove_front() {
 
 template<typename T>
 void structures::LinkedList<T>::remove(const T& data) {
-  pop(find(data));
+    auto index = find(data);
+    if (index != size()) {
+        pop(index);
+    }
 }
 
 template<typename T>
 bool structures::LinkedList<T>::empty() const {
-  if (size() == 0) {
+  if(size_ == 0) {
     return true;
   } else {
     return false;
@@ -278,12 +288,21 @@ bool structures::LinkedList<T>::empty() const {
 
 template<typename T>
 bool structures::LinkedList<T>::contains(const T& data) const {
-  return true;
+  return find(data) != size();
 }
 
 template<typename T>
 std::size_t structures::LinkedList<T>::find(const T& data) const {
-  return 1u;
+  auto temp = head;
+  int i = 0;
+  while (temp != nullptr) {
+      if (temp->data() == data) {
+          return i;
+      }
+      i++;
+      temp = temp->next();
+  }
+  return i;
 }
 
 template<typename T>
