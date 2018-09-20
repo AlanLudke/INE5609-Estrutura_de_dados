@@ -63,4 +63,3 @@ TEST_F(LinkedStackTest, Pop) {
 TEST_F(LinkedStackTest, PopEmpty) {
     ASSERT_THROW(stack.pop(), std::out_of_range);
 }
-

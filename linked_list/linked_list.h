@@ -111,7 +111,7 @@ structures::LinkedList<T>::~LinkedList() {
 
 template<typename T>
 void structures::LinkedList<T>::clear() {
-    while(!empty()) {
+    while(empty() == false) {
         pop_front();
     }
 }
