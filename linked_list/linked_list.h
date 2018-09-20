@@ -111,7 +111,7 @@ structures::LinkedList<T>::~LinkedList() {
 
 template<typename T>
 void structures::LinkedList<T>::clear() {
-    while(empty() == false) {
+    while (!empty()) {
         pop_front();
     }
 }
@@ -210,8 +210,8 @@ T& structures::LinkedList<T>::at(std::size_t index) {
 
 template<typename T>
 T structures::LinkedList<T>::pop(std::size_t index) {
-  Node *anterior, *eliminar;  //  auxiliares
-  T volta;  //  errado T*
+  Node *anterior, *eliminar;
+  T volta;
   if (empty() || index >= size_ || index < 0) {
     throw std::out_of_range("Erro no index!!");
   } else {
@@ -226,7 +226,7 @@ T structures::LinkedList<T>::pop(std::size_t index) {
       volta = eliminar->data();
       anterior->next(eliminar->next());
       size_--;
-      delete[] eliminar;
+      delete eliminar;
       return volta;
     }
   }
@@ -265,7 +265,7 @@ void structures::LinkedList<T>::remove_front() {
     head = saiu->next();
     size_ = size_ - 1;
     delete saiu->data();
-    delete[] saiu;
+    delete saiu;
   }
 }
 
@@ -279,7 +279,7 @@ void structures::LinkedList<T>::remove(const T& data) {
 
 template<typename T>
 bool structures::LinkedList<T>::empty() const {
-  if(size_ == 0) {
+  if (size_ == 0) {
     return true;
   } else {
     return false;

@@ -1,5 +1,5 @@
 /* Copyright [2018] <Alan Djon Lüdke>
- * array_stack.cpp
+ * array_stack.h
  */
 #ifndef STRUCTURES_ARRAY_STACK_H
 #define STRUCTURES_ARRAY_STACK_H
