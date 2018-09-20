@@ -143,4 +143,3 @@ template<typename T>
 std::size_t structures::LinkedStack<T>::size() const {
     return size_;
 }
-	 	  	  		 	      	   	    	  	     	 	
