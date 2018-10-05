@@ -113,12 +113,7 @@ void structures::ArrayList<T>::clear() {
 
 template<typename T>
 void structures::ArrayList<T>::push_back(const T& data) {
-    if (full()) {
-        throw std::out_of_range("A fila esta cheia!");
-    } else {
-        contents[size_] = data;
-        size_++;
-    }
+    insert(data, size_);
 }
 
 template<typename T>
@@ -261,4 +256,3 @@ const T& structures::ArrayList<T>::operator[](std::size_t index) const {
 }
 
 #endif
-
