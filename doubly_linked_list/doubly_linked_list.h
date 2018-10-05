@@ -133,12 +133,6 @@ void structures::DoublyLinkedList<T>::push_back(const T& data) {
 
 template<typename T>
 void structures::DoublyLinkedList<T>::push_front(const T& data) {
-/*
-Verifica a possibilidade de alocac¸ao de um elemento; ˜
-O proximo deste novo elemento passa ser o primeiro da ´
-lista;
-A cabec¸a de lista passa a apontar para o novo elemento.
-*/
 
 Node *novo = new Node(data);
 
@@ -153,7 +147,7 @@ Node *novo = new Node(data);
 
 template<typename T>
 void structures::DoublyLinkedList<T>::insert(const T& data, std::size_t index) {
-  Node *novo, *anterior;  // auxiliares
+  Node *novo, *anterior;
 
   if (index > size_) {
     throw std::out_of_range("Erro no index!!");
@@ -179,7 +173,7 @@ void structures::DoublyLinkedList<T>::insert(const T& data, std::size_t index) {
 
 template <typename T>
 void structures::DoublyLinkedList<T>::insert_sorted(const T& data) {
-  // If list is empty, just push
+
         if (empty()) {
             push_back(data);
             return;
@@ -192,7 +186,6 @@ void structures::DoublyLinkedList<T>::insert_sorted(const T& data) {
             it = it->next();
             index++;
 
-            // If reach the last object, push on last pos
             if (it == nullptr) {
                 push_back(data);
                 return;
