@@ -1,9 +1,9 @@
 /* Copyright [2018] <Alan Djon Lüdke>
  * circular_list.h
  */
-
-#ifndef STRUCTURES_CIRCULAR_LIST_H
-#define STRUCTURES_CIRCULAR_LIST_H
+//  there are some problems to solve
+#ifndef STRUCTURES_DOUBLY_CIRCULAR_LIST_H
+#define STRUCTURES_DOUBLY_CIRCULAR_LIST_H
 
 #include <cstdint>  // std::size_t
 #include <stdexcept>  // C++ Exceptions
@@ -11,15 +11,15 @@
 
 namespace structures {
 
-//! classe CircularList
+//! classe DoublyCircularList
 template<typename T>
-class CircularList {
+class DoublyCircularList {
  public:
-  //! Constructor method of CircularList();
-  CircularList();
+  //! Constructor method of DoublyCircularList();
+  DoublyCircularList();
 
   //! Destructor method
-  ~CircularList();
+  ~DoublyCircularList();
 
   //! Wipe the list
   void clear();
@@ -35,12 +35,6 @@ class CircularList {
 
   //! Puts an element neatly
   void insert_sorted(const T& data);
-
-  //! Returns the element of the index
-  T& at(std::size_t index);
-
-  //! Returns the const element of the index
-  const T& at(std::size_t index) const;
 
   //! Takes an specific element off by index
   T pop(std::size_t index);
@@ -60,6 +54,12 @@ class CircularList {
   //! Returns if an specific element belongs to the list
   bool contains(const T& data) const;
 
+  //! Returns the element of the index
+  T& at(std::size_t index);
+
+  //! Returns the const element of the index
+  const T& at(std::size_t index) const;
+
   //! Returns the index of an element
   std::size_t find(const T& data) const;
 
@@ -67,7 +67,7 @@ class CircularList {
   std::size_t size() const;
 
  private:
-  class Node {  // Elemento
+  class Node {
    public:
     explicit Node(const T& data):
       data_{data}
@@ -78,38 +78,68 @@ class CircularList {
       next_{next}
     {}
 
-    T& data() {  // getter: dado
+    Node(const T& data, Node* prev, Node* next):
+      data_{data},
+      prev_{prev},
+      next_{next}
+    {}
+
+    Node(const T& data, Node* next, bool sentinel):
+      data_{data},
+      next_{next},
+      isSentinel_{isSentinel}
+    {}
+
+    T& data() {
       return data_;
     }
 
-    const T& data() const {  // getter const: dado
+    const T& data() const {
       return data_;
     }
 
-    Node* next() {  // getter: próximo
+    Node* prev() {
+      return prev_;
+    }
+
+    const Node* prev() const {
+      return prev_;
+    }
+
+    void prev(Node* node) {
+      prev_ = node;
+    }
+
+    Node* next() {
       return next_;
     }
 
-    const Node* next() const {  // getter const: próximo
+    const Node* next() const {
       return next_;
     }
 
-    void next(Node* node) {  // setter: próximo
+    void next(Node* node) {
       next_ = node;
+    }
+
+    bool isSentinel() {
+      return isSentinel_;
+    }
+
+    const bool isSentinel() const {
+      return isSentinel_;
+    }
+
+    void isSentinel(bool isSentinel) {
+      isSentinel_ = isSentinel;
     }
 
    private:
     T data_;
     Node* next_{nullptr};
+    Node* prev_{nullptr};
+    bool isSentinel_;
   };
-
-  Node* end() {  // último nodo da lista
-  auto it = head;
-  for (auto i = 1u; i < size(); ++i) {
-  it = it->next();
-  }
-  return it;
-  }
 
   Node* head{nullptr};
   std::size_t size_{0u};
@@ -119,22 +149,22 @@ class CircularList {
 
 
 template<typename T>
-structures::CircularList<T>::CircularList() {}
+structures::DoublyCircularList<T>::DoublyCircularList() {}
 
 template<typename T>
-structures::CircularList<T>::~CircularList() {
+structures::DoublyCircularList<T>::~DoublyCircularList() {
   clear();
 }
 
 template<typename T>
-void structures::CircularList<T>::clear() {
+void structures::DoublyCircularList<T>::clear() {
   while (!empty()) {
     pop_front();
   }
 }
 
 template<typename T>
-void structures::CircularList<T>::push_back(const T& data) {
+void structures::DoublyCircularList<T>::push_back(const T& data) {
   if (empty()) {
     push_front(data);
   } else {
@@ -143,7 +173,7 @@ void structures::CircularList<T>::push_back(const T& data) {
 }
 
 template<typename T>
-void structures::CircularList<T>::push_front(const T& data) {
+void structures::DoublyCircularList<T>::push_front(const T& data) {
   Node *novo = new Node(data);
 
   if (novo == nullptr) {
@@ -156,8 +186,9 @@ void structures::CircularList<T>::push_front(const T& data) {
 }
 
 template<typename T>
-void structures::CircularList<T>::insert(const T& data, std::size_t index) {
-  Node *novo, *anterior;  // auxiliares
+void structures::DoublyCircularList<T>::insert(const T& data,
+std::size_t index) {
+  Node *novo, *anterior;
 
   if (index > size_) {
     throw std::out_of_range("Erro no index!!");
@@ -182,7 +213,7 @@ void structures::CircularList<T>::insert(const T& data, std::size_t index) {
 }
 
 template <typename T>
-void structures::CircularList<T>::insert_sorted(const T& data) {
+void structures::DoublyCircularList<T>::insert_sorted(const T& data) {
   if (empty()) {
     push_back(data);
     return;
@@ -204,7 +235,7 @@ void structures::CircularList<T>::insert_sorted(const T& data) {
 }
 
 template <typename T>
-T& structures::CircularList<T>::at(std::size_t index) {
+T& structures::DoublyCircularList<T>::at(std::size_t index) {
   if (index >= size()) {
     throw std::out_of_range("Index out of bounds.");
   }
@@ -216,7 +247,7 @@ T& structures::CircularList<T>::at(std::size_t index) {
 }
 
 template<typename T>
-T structures::CircularList<T>::pop(std::size_t index) {
+T structures::DoublyCircularList<T>::pop(std::size_t index) {
   Node *anterior, *eliminar;
   T volta;
   if (empty() || index >= size_ || index < 0) {
@@ -240,14 +271,14 @@ T structures::CircularList<T>::pop(std::size_t index) {
 }
 
 template<typename T>
-T structures::CircularList<T>::pop_back() {
+T structures::DoublyCircularList<T>::pop_back() {
   return pop(size_-1);
 }
 
 template<typename T>
-T structures::CircularList<T>::pop_front() {
+T structures::DoublyCircularList<T>::pop_front() {
   Node *saiu;
-  T volta;  // é ponteiro aqui?
+  T volta;
 
   if (empty()) {
     throw std::out_of_range("Lista vazia, não é possivel retirar!");
@@ -262,15 +293,15 @@ T structures::CircularList<T>::pop_front() {
 }
 
 template<typename T>
-void structures::CircularList<T>::remove(const T& data) {
-    auto index = find(data);
-    if (index != size()) {
-        pop(index);
-    }
+void structures::DoublyCircularList<T>::remove(const T& data) {
+  auto index = find(data);
+  if (index != size()) {
+    pop(index);
+  }
 }
 
 template<typename T>
-bool structures::CircularList<T>::empty() const {
+bool structures::DoublyCircularList<T>::empty() const {
   if (size_ == 0) {
     return true;
   } else {
@@ -279,27 +310,27 @@ bool structures::CircularList<T>::empty() const {
 }
 
 template<typename T>
-bool structures::CircularList<T>::contains(const T& data) const {
+bool structures::DoublyCircularList<T>::contains(const T& data) const {
   return find(data) != size();
 }
 
 template<typename T>
-std::size_t structures::CircularList<T>::find(const T& data) const {
+std::size_t structures::DoublyCircularList<T>::find(const T& data) const {
   auto temp = head;
   int i = 0;
   while (temp != nullptr) {
-      if (temp->data() == data) {
-          return i;
-      }
-      i++;
-      temp = temp->next();
+    if (temp->data() == data) {
+      return i;
+    }
+    i++;
+    temp = temp->next();
   }
   return i;
 }
 
 template<typename T>
-std::size_t structures::CircularList<T>::size() const {
-    return size_;
+std::size_t structures::DoublyCircularList<T>::size() const {
+  return size_;
 }
 
 #endif

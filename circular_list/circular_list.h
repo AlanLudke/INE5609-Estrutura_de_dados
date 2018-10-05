@@ -1,7 +1,7 @@
 /* Copyright [2018] <Alan Djon Lüdke>
  * circular_list.h
  */
-
+//  there are some problems to solve
 #ifndef STRUCTURES_CIRCULAR_LIST_H
 #define STRUCTURES_CIRCULAR_LIST_H
 
