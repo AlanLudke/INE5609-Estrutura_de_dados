@@ -1,5 +1,5 @@
 /* Copyright [2018] <Alan Djon Lüdke>
- * array_list.h
+ * array_list.cpp
  */
 #ifndef STRUCTURES_ARRAY_LIST_H
 #define STRUCTURES_ARRAY_LIST_H
@@ -13,71 +13,71 @@ namespace structures {
 template<typename T>
 class ArrayList {
  public:
-  //! Constructor method of LinkedList();
-  ArrayList();
+   //! Constructor method of LinkedList();
+    ArrayList();
 
-  //! Constructor method of LinkedList() with size;
-  explicit ArrayList(std::size_t max_size);
+    //! Constructor method of LinkedList() with size;
+    explicit ArrayList(std::size_t max_size);
 
-  //! Destructor method
-  ~ArrayList();
+    //! Destructor method
+    ~ArrayList();
 
-  //! Wipe the list
-  void clear();
+    //! Wipe the list
+    void clear();
 
-  //! Puts an element in the end of the list
-  void push_back(const T& data);
+    //! Puts an element in the end of the list
+    void push_back(const T& data);
 
-  //! Puts an element in the beginning of the list
-  void push_front(const T& data);
+    //! Puts an element in the beginning of the list
+    void push_front(const T& data);
 
-  //! Puts an element in a specific index
-  void insert(const T& data, std::size_t index);
+    //! Puts an element in a specific index
+    void insert(const T& data, std::size_t index);
 
-  //! Puts an element neatly
-  void insert_sorted(const T& data);
+    //! Puts an element neatly
+    void insert_sorted(const T& data);
 
-  //! Takes an specific element off by index
-  T pop(std::size_t index);
+    //! Takes an specific element off by index
+    T pop(std::size_t index);
 
-  //! Takes the last element off
-  T pop_back();
+    //! Takes the last element off
+    T pop_back();
 
-  //! Takes the first element off
-  T pop_front();
+    //! Takes the first element off
+    T pop_front();
 
-  //! Remove the first element
-  void remove(const T& data);
+    //! Remove the first element
+    void remove(const T& data);
 
-  //! Return if full
-  bool full() const;
+    //! Return if full
+    bool full() const;
 
-  //! Return if empty
-  bool empty() const;
+    //! Return if empty
+    bool empty() const;
 
-  //! Returns if an specific element belongs to the list
-  bool contains(const T& data) const;
+    //! Returns if an specific element belongs to the list
+    bool contains(const T& data) const;
 
-  //! Returns the index of an element
-  std::size_t find(const T& data) const;
+    //! Returns the index of an element
+    std::size_t find(const T& data) const;
 
-  //! Returns the size of the list
-  std::size_t size() const;
+    //! Returns the size of the list
+    std::size_t size() const;
 
-  //! Returns the max size of the list
-  std::size_t max_size() const;
+    //! Returns the max size of the list
+    std::size_t max_size() const;
 
-  //! Returns the element of the index
-  T& at(std::size_t index);
+    //! Returns the element of the index
+    T& at(std::size_t index);
 
-  //! Overload the operator
-  T& operator[](std::size_t index);
+    //! Overload the operator
+    T& operator[](std::size_t index);
 
-  //! Polymorph for const object
-  const T& at(std::size_t index) const;
+    //! Polymorph for const object
+    const T& at(std::size_t index) const;
 
-  //! Polymorph for const object
-  const T& operator[](std::size_t index) const;
+    //! Polymorph for const object
+    const T& operator[](std::size_t index) const;
 
  private:
     static const auto DEFAULT_MAX = 10u;
