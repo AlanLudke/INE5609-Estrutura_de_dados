@@ -1,24 +1,21 @@
-//! Copyright 2018 <Alan Lüdke>
-#ifndef STRUCTURES_BINARY_TREE_H
-#define STRUCTURES_BINARY_TREE_H
+//  Copyright 2018 <Alan Ludke>
+#ifndef STRUCTURES_AVI_TREE_H
+#define STRUCTURES_AVI_TREE_H
 
 #include <cstdint>  // std::size_t
 #include <stdexcept>  // C++ Exceptions
-#include <vector>
 #include "array_list.h"
-
-/*!Árvore binária de busca
-*/
+/*!Implementação da arvore AVL balaceada*/
 
 namespace structures {
 /*!Parametro generico para templates*/
 template<typename T>
-class BinaryTree {
+class AVLTree {
 public:
 /*!Construtor*/
-    BinaryTree() = default;
+    AVLTree() {}
 /*!Destrutor*/
-    virtual ~BinaryTree() {
+    virtual ~AVLTree() {
         delete root;
         size_ = 0;
     }
@@ -57,7 +54,7 @@ public:
     }
 /*!Visite a raiz antes das subarvores*/
     ArrayList<T> pre_order() const {
-         ArrayList<T> v{size_};
+        ArrayList<T> v{size_};
         if (!empty())
             root->pre_order(v);
         return v;
@@ -76,13 +73,16 @@ public:
             root->post_order(v);
         return v;
     }
- private :
+
+ private:
     struct Node {
 /*!Construtor com parametros*/
         explicit Node(const T& data) : data{data}, left{nullptr}, right{nullptr}
         {}
 /*!Dado a ser inserido na arvore*/
         T data;
+/*!Altura da arvore*/
+        std::size_t height;
 /*!Elemento da esquerda*/
         Node* left;
 /*!Elemento da direita*/
@@ -142,13 +142,6 @@ public:
                 temp = right->remove(data_);
             }
             return temp;
-            /*!bool temp = false;
-            if (contains(data_)) {
-                T* aux = data_;
-                delete aux;
-                temp = true;
-            }
-            return temp;*/
         }
 /*!Contem o elemento desejado?*/
         bool contains(const T& data_) const {
@@ -163,10 +156,42 @@ public:
                 }
             }
             return temp;
-            /*!bool temp = false;
-            if (data_ == data)
-                temp = true;
-            return temp;*/
+        }
+/*!Altura da arvore*/
+        void updateHeight() {
+            if (this->left == nullptr || this->rigth == nullptr)
+                return -1;
+            this->heigth++;
+        }
+/*!Girar para a esquerda */
+        Node* simpleLeft(Node* k2) {
+            Node* k1;
+            k1 = k2->left;
+            k2->left = k1->right;
+            k1->right = k2;
+            k2->updateHeight();
+            k1->updateHeight();
+            return k1;
+        }
+/*!Girar para a direita */
+        Node* simpleRight(Node* k2) {
+            Node* k1;
+            k1 = k2->right;
+            k2->right = k1->left;
+            k1->left = k2;
+            k2->updateHeight();
+            k1->updateHeight();
+            return k1;
+        }
+/*!Girar duas para a esquerda */
+        Node* doubleLeft(Node* k3) {
+            k3->left = simpleRight(k3->left);
+            return simpleLeft(k3);
+        }
+/*!Girar duas para a esquerda */
+        Node* doubleRight(Node* k3) {
+            k3->right = simpleLeft(k3->right);
+            return simpleRight(k3);
         }
 /*!Visite a raiz antes das subarvores*/
         void pre_order(ArrayList<T>& v) const {
@@ -178,13 +203,13 @@ public:
         }
 /*!Visite a subarvores*/
         void in_order(ArrayList<T>& v) const {
-            if (this->left != nullptr)
+             if (this->left != nullptr)
                 left->in_order(v);
             v.push_back(this->data);
             if (this->right != nullptr)
                 right->in_order(v);
         }
-/*!Visite a raiz depois das subarvores*/
+
         void post_order(ArrayList<T>& v) const {
              if (this->left != nullptr)
                 left->post_order(v);
@@ -193,11 +218,10 @@ public:
             v.push_back(this->data);
         }
     };
-/*!Todos os Elemento*/
+
     Node* root{nullptr};
-/*!Numero de Elementos*/
     std::size_t size_{0u};
 };
-}  //  namespace structures
 
-#endif /*! STRUCTURES_BINARY_TREE_H */
+}  // namespace structures
+#endif  /*! STRUCTURES_AVI_TREE_H */
